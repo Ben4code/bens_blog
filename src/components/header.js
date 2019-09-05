@@ -5,11 +5,8 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
-  NavItem,
-  NavLink
-} from 'reactstrap';
+  NavItem } from 'reactstrap';
 
 
 
@@ -33,27 +30,23 @@ export default class Header extends Component {
     return (
       <div>
         <Navbar fixed="top" light expand="sm">
-          <NavbarBrand href="/">{this.props.siteTitle}</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink>
-                  <Link to="/about">About</Link>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  <Link to="/team">Team</Link>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink>
-                  <Link to="/tags">Tags</Link>
-                </NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
+          <div className="container">
+            <Link className="navbar-brand" to='/'>{this.props.siteTitle}</Link>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <Link className="nav-link" to="/about">About</Link>
+                </NavItem>
+                <NavItem>
+                  <Link className="nav-link" to="/team">Team</Link>
+                </NavItem>
+                <NavItem>
+                  <Link className="nav-link" to="/tags">Tags</Link>
+                </NavItem>
+              </Nav>
+            </Collapse>
+          </div>
         </Navbar>
       </div>
     );
