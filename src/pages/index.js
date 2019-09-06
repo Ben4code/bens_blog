@@ -3,15 +3,10 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { StaticQuery, graphql } from 'gatsby'
 import Posts from '../components/Posts'
-import { Row, Col } from 'reactstrap'
-import Sidebar from '../components/Sidebar'
 
 const IndexPage = () => (
-  <Layout>
+  <Layout pageTitle = "Welcome to Ben's blog">
     <SEO title="Home" />
-    <h1>Welcome to Home Page</h1>
-    <Row>
-      <Col md="8">
         <StaticQuery query={IndexQuery} render={(data) => (
           <div>
             {data.allMarkdownRemark.edges.map(({ node }) => (
@@ -19,11 +14,6 @@ const IndexPage = () => (
             ))}
           </div>
         )} />
-      </Col>
-      <Col md="4">
-        <Sidebar/>
-      </Col>
-    </Row>
   </Layout>
 )
 
