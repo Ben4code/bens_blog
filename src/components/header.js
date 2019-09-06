@@ -29,7 +29,7 @@ export default class Header extends Component {
   render() {
     return (
       <div>
-        <Navbar fixed="top" light expand="sm">
+        <Navbar fixed="top" className="navbar navbar-dark bg-primary" expand="sm">
           <div className="container">
             <Link className="navbar-brand" to='/'>{this.props.siteTitle}</Link>
             <NavbarToggler onClick={this.toggle} />

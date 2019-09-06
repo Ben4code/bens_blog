@@ -4,6 +4,7 @@ import SEO from "../components/seo"
 import { StaticQuery, graphql } from 'gatsby'
 import Posts from '../components/Posts'
 import { Row, Col } from 'reactstrap'
+import Sidebar from '../components/Sidebar'
 
 const IndexPage = () => (
   <Layout>
@@ -20,6 +21,7 @@ const IndexPage = () => (
         )} />
       </Col>
       <Col md="4">
+        <Sidebar/>
       </Col>
     </Row>
   </Layout>
@@ -35,6 +37,7 @@ const IndexQuery = graphql`
             date
             path
             title
+            tags
             image {
               childImageSharp {
                 fluid(quality: 85, maxWidth: 600) {

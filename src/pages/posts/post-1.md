@@ -4,6 +4,10 @@ date: "2019-09-5 23:14:00"
 author: "Ben Obioha"
 path: "/first-post"
 image: "../../images/post1.jpg"
+tags:
+- Web Design
+- Code Test
+
 ---
 
 
