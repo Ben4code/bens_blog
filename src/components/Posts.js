@@ -2,15 +2,18 @@ import React from 'react'
 import {Card, CardBody, CardTitle, CardSubtitle, CardText} from 'reactstrap'
 import {Link} from 'gatsby';
 import Moment from 'moment'
-
+import Img from 'gatsby-image'
 
 export default function Posts({post}) {
     return (
         <Card>
+            <Link to={post.frontmatter.path}>
+                <Img className="card-image-top" fluid={post.frontmatter.image.childImageSharp.fluid}/>
+            </Link>
             <CardBody>
                 <CardTitle>
                     <Link to={post.frontmatter.path}>
-                        {post.frontmatter.title}
+                       <h2>{post.frontmatter.title}</h2> 
                     </Link>
                 </CardTitle>
                 <CardSubtitle>

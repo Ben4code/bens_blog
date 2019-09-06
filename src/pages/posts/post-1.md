@@ -3,6 +3,7 @@ title: "First Post - Welcome to Ben's blog"
 date: "2019-09-5 23:14:00"
 author: "Ben Obioha"
 path: "/first-post"
+image: "../../images/post1.jpg"
 ---
 
 

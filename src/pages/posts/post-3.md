@@ -3,6 +3,7 @@ title: "Third Post - Moving forward"
 date: "2019-09-7 13:14:00"
 author: "Ben Obioha"
 path: "/third-post"
+image: "../../images/post3.jpg"
 ---
 
 
