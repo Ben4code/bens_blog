@@ -8,12 +8,12 @@ import slugify from 'slugify';
 export default function Posts({post}) {
     return (
         <Card>
-            <Link to={post.frontmatter.path}>
+            <Link to={`/posts/${post.fields.slug}`}>
                 <Img className="card-image-top" fluid={post.frontmatter.image.childImageSharp.fluid}/>
             </Link>
             <CardBody>
                 <CardTitle>
-                    <Link to={post.frontmatter.path}>
+                    <Link to={`/posts/${post.fields.slug}`}>
                        <h2>{post.frontmatter.title}</h2> 
                     </Link>
                 </CardTitle>
@@ -31,7 +31,7 @@ export default function Posts({post}) {
                         </li>
                     ))}
                 </ul>
-                <Link to={post.frontmatter.path} className="btn btn-outline-primary float-right">Read more</Link>
+                <Link to={`/posts/${post.fields.slug}`} className="btn btn-outline-primary float-right">Read more</Link>
             </CardBody>
         </Card>
     )

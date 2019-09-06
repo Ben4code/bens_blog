@@ -7,7 +7,7 @@ import {
   NavbarToggler,
   Nav,
   NavItem } from 'reactstrap';
-
+  import groot from '../images/groot.svg'
 
 
 export default class Header extends Component {
@@ -31,7 +31,7 @@ export default class Header extends Component {
       <div>
         <Navbar fixed="top" className="navbar navbar-dark bg-primary" expand="sm">
           <div className="container">
-            <Link className="navbar-brand" to='/'>{this.props.siteTitle}</Link>
+            <Link className="navbar-brand" to='/'><img src={groot} width="40" alt="logo"/> {this.props.siteTitle}</Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>

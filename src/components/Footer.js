@@ -1,9 +1,10 @@
 import React from 'react'
+import groot from '../images/groot.svg'
 
 export default function Footer() {
     return (
         <div className="site-footer">
-            <h4 className="text-center">Ben's blog</h4>
+            <h4 className="text-center"><img src={groot} width="40" alt="logo"/> Ben's blog</h4>
             <p className="text-center">Follow us on social media</p>
             <div className="footer-social-links">
                 <ul className="social-links-list">

@@ -31,12 +31,12 @@ export default function Sidebar() {
                         <div>
                             {data.allMarkdownRemark.edges.map(({node})=>(
                                 <Card key={node.id}>
-                                    <Link to={node.frontmatter.path}>
+                                    <Link to={`/posts/${node.fields.slug}`}>
                                         <Img className="card-image-top" fluid={node.frontmatter.image.childImageSharp.fluid}/>
                                     </Link>
                                     <CardBody>
                                         <CardTitle >
-                                            <Link to={node.frontmatter.path}> {node.frontmatter.title} </Link>
+                                            <Link to={`/posts/${node.fields.slug}`}> {node.frontmatter.title} </Link>
                                         </CardTitle>
                                     </CardBody>
                                 </Card>
@@ -57,7 +57,6 @@ const SidebarQuery = graphql`
                 frontmatter {
                   author
                   date
-                  path
                   title
                   image {
                     childImageSharp {
@@ -66,6 +65,9 @@ const SidebarQuery = graphql`
                       }
                     }
                   }
+                }
+                fields{
+                    slug
                 }
                 id
               }

@@ -35,7 +35,6 @@ const IndexQuery = graphql`
           frontmatter {
             author
             date
-            path
             title
             tags
             image {
@@ -48,6 +47,9 @@ const IndexQuery = graphql`
           }
           excerpt
           id
+          fields{
+            slug
+          }
         }
       }
     }
