@@ -6,12 +6,14 @@ import SEO from '../components/seo'
 import {Card, CardBody, CardSubtitle, Badge } from 'reactstrap'
 import Img from 'gatsby-image'
 import slugify from 'slugify'
-
+import authors from '../util/authors'
 
 const SinglePost = ({ data }) => {
     const post = data.markdownRemark.frontmatter;
+    const authorObj = authors.find(author => author.name === post.author)
+    console.log(authorObj);
     return (
-        <Layout pageTitle={post.title}>
+        <Layout pageTitle={post.title} author={authorObj} authorImg={data.file.childImageSharp.fluid}>
             <SEO title={post.title} />
             <Card>
                 <Img fluid={post.image.childImageSharp.fluid} />
@@ -21,7 +23,7 @@ const SinglePost = ({ data }) => {
                         <span className="text-info">{post.author}</span>
                     </CardSubtitle>
                     <div dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
-                    <ul className="posts-tags">
+                    <ul className="post-tags">
                         {post.tags.map((tag, i) => (
                             <li key={i}>
                                 <Link to={`/tags/${slugify(tag, { lower: true })}`}>
@@ -39,7 +41,8 @@ export default SinglePost;
 
 
 export const SinglePostQuery = graphql`
-    query SinglePostQuery($slug: String!) {
+    query SinglePostQuery($slug: String!, $imgUrl: String!) {
+
         markdownRemark(fields: {slug: {eq: $slug}}){
             id
             html
@@ -58,6 +61,14 @@ export const SinglePostQuery = graphql`
             }
             fields{
                 slug
+            }
+        }
+
+        file(relativePath: {eq: $imgUrl}){
+            childImageSharp {
+                fluid(maxWidth: 300, quality: 85){
+                    ...GatsbyImageSharpFluid
+                }
             }
         }
     }
