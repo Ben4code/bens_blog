@@ -3,15 +3,24 @@ import Layout from '../components/layout'
 import { graphql, Link } from 'gatsby'
 import Moment from 'moment'
 import SEO from '../components/seo'
-import {Card, CardBody, CardSubtitle, Badge } from 'reactstrap'
+import { Card, CardBody, CardSubtitle, Badge } from 'reactstrap'
 import Img from 'gatsby-image'
 import slugify from 'slugify'
 import authors from '../util/authors'
+import {DiscussionEmbed} from 'disqus-react'
 
 const SinglePost = ({ data }) => {
     const post = data.markdownRemark.frontmatter;
     const authorObj = authors.find(author => author.name === post.author)
-    console.log(authorObj);
+    const baseUrl ="https://gatsbysite.com/"
+    const slug = data.markdownRemark.fields.slug;
+    const disqusShortName = "http-www-devmigrant-com"
+    const disqusConfig = {
+        identifier: data.markdownRemark.id,
+        title: post.title,
+        url: baseUrl + slug
+    }
+    console.log(data);
     return (
         <Layout pageTitle={post.title} author={authorObj} authorImg={data.file.childImageSharp.fluid}>
             <SEO title={post.title} />
@@ -34,6 +43,22 @@ const SinglePost = ({ data }) => {
                     </ul>
                 </CardBody>
             </Card>
+            <h3 className="text-center">
+                Share this post
+            </h3>
+            <div className="social-share-links text-center">
+                <ul className="social-links-list">
+                    <li><a href={`https://www.facebook.com/sharer.php?u=${baseUrl}${slug}`} target="_blank" rel="noopener noreferrer" className="facebook fa-2x"><i className="fa fa-facebook-f"></i></a></li>
+
+                    <li><a href={`https://www.twitter.com/share?url=${baseUrl}${slug}&text=${post.title}&via`} target="_blank" rel="noopener noreferrer" className="twitter fa-2x"><i className="fa fa-twitter"></i></a></li>
+                    
+                    <li><a href={`https://plus.google.com/share?url=${baseUrl}${slug}`} target="_blank" rel="noopener noreferrer" className="google fa-2x"><i className="fa fa-google"></i></a></li>
+                    
+                    <li><a href={`https://www.linkedin.com/shareArticle?url=${baseUrl}${slug}`} target="_blank" rel="noopener noreferrer" className="linkedin fa-2x"><i className="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            
+            <DiscussionEmbed  shortname={disqusShortName} config={disqusConfig}/> 
         </Layout>
     )
 }
