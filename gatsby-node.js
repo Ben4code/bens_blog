@@ -17,7 +17,7 @@ exports.onCreateNode = ({node, actions}) => {
 
 exports.createPages = ({actions, graphql}) => {
     const {createPage } = actions;
-    const singlePastTemplate = path.resolve('./src/templates/SinglePost.js');
+    const singlePastTemplate = path.resolve('./src/templates/singlePost.js');
 
     return graphql(`
     
@@ -53,5 +53,22 @@ exports.createPages = ({actions, graphql}) => {
                 }
             })
         })
+
+        // let tags = [];
+        // posts.forEach(({node})=> {
+        //     if(node.frontmatter.tags.length > 0){
+        //          tags.push(...node.frontmatter.tags);
+        //     }
+        //     return tags;
+        // })
+        // console.log("---------------",tags, "---------------");
+        // if(tags){
+        //    const vals = tags.reduce((accumTag, currentTag)=>{               
+        //     accumTag[currentTag] ? accumTag[currentTag] = accumTag[currentTag] + 1 : accumTag[currentTag] = 1;
+        //     return accumTag;
+        //     }, {})
+        //     console.log(vals);
+        // }
+        
     })
 }
