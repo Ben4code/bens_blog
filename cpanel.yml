@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/u214596915.varsitylancer.co.uk/public_html/
+    - /bin/cp * $DEPLOYPATH
+    
