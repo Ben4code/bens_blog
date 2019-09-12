@@ -1,10 +1,12 @@
 import React from 'react'
-import { Card, CardBody, CardTitle, Form, FormGroup, Input, CardText } from 'reactstrap'
+import { Card, CardBody, CardTitle, Form, FormGroup, Input, CardText, Badge } from 'reactstrap'
 import Ad from '../images/ad-placeholder.jpg'
 import { graphql, StaticQuery, Link } from 'gatsby'
 import Img from 'gatsby-image'
+import slugify from 'slugify';
 
 export default function Sidebar({ author, authorImg }) {
+
     return (
         <div>
             {
@@ -27,6 +29,7 @@ export default function Sidebar({ author, authorImg }) {
                     </Card>
                 )
             }
+
             <Card>
                 <CardBody>
                     <CardTitle className="text-center text-uppercase mb-3">Newsletter</CardTitle>
@@ -38,6 +41,46 @@ export default function Sidebar({ author, authorImg }) {
                     </Form>
                 </CardBody>
             </Card>
+
+            <Card>
+                <CardBody>
+                    <CardTitle className="text-center text-uppercase mb-3">Categories</CardTitle>
+                    <StaticQuery query={SidebarQuery} render={(data) => {
+
+                        let tags = [];
+                        data.allMarkdownRemark.edges.forEach(({ node }) => {
+                            if (node.frontmatter.tags.length > 0) {
+                                tags.push(...node.frontmatter.tags);
+                            }
+                        })
+
+                        let filteredTags;
+                        if (tags) {
+                            filteredTags = tags.reduce((accumTag, currentTag) => {
+                                accumTag[currentTag] ? accumTag[currentTag] = accumTag[currentTag] + 1 : accumTag[currentTag] = 1;
+                                return accumTag;
+                            }, {})
+                        }
+                        let filteredTagsArr = Object.entries(filteredTags);
+
+                        return (
+                            <Card>
+                                <CardBody>
+                                    <ul>
+                                        {filteredTagsArr.map((tag, i) => (
+                                            <li key={i} className="text-center text-uppercase mb-3">
+                                                <Link to={`/tags/${slugify(tag[0], {lower:true})}`}>{tag[0]}</Link> {`: `}
+                                                <Badge color="primary">{tag[1]}</Badge>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </CardBody>
+                            </Card>
+                        )
+                    }} />
+                </CardBody>
+            </Card>
+
             <Card>
                 <CardBody>
                     <CardTitle className="text-center text-uppercase mb-3">Advertisment</CardTitle>
@@ -78,6 +121,7 @@ const SidebarQuery = graphql`
                   author
                   date
                   title
+                  tags
                   image {
                     childImageSharp {
                       fluid(quality: 85, maxWidth: 300) {

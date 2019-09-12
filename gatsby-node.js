@@ -2,11 +2,11 @@ const slugify = require('slugify');
 const path = require('path');
 const authors = require('./src/util/authors');
 
-exports.onCreateNode = ({node, actions}) => {
-    const {createNodeField} = actions;
-    
-    if(node.internal.type === 'MarkdownRemark'){
-        const slugFromTitle = slugify(node.frontmatter.title)
+exports.onCreateNode = ({ node, actions }) => {
+    const { createNodeField } = actions;
+
+    if (node.internal.type === 'MarkdownRemark') {
+        const slugFromTitle = slugify(node.frontmatter.title);
         createNodeField({
             node,
             name: 'slug',
@@ -15,9 +15,10 @@ exports.onCreateNode = ({node, actions}) => {
     }
 }
 
-exports.createPages = ({actions, graphql}) => {
-    const {createPage } = actions;
-    const singlePastTemplate = path.resolve('./src/templates/singlePost.js');
+exports.createPages = ({ actions, graphql }) => {
+    const { createPage } = actions;
+    const singlePostTemplate = path.resolve('./src/templates/singlePost.js');
+    const tagsPageTemplate = path.resolve('./src/templates/tagsPage.js');
 
     return graphql(`
     
@@ -36,39 +37,56 @@ exports.createPages = ({actions, graphql}) => {
                 }
             }
         }
-    `).then( res=> {
-        if(res.errors){
+    `).then(res => {
+        if (res.errors) {
             return res.errors;
         }
 
         const posts = res.data.allMarkdownRemark.edges;
 
-        posts.forEach(({node})=>{
+        posts.forEach(({ node }) => {
             createPage({
                 path: `/posts/${node.fields.slug}`,
-                component: singlePastTemplate,
+                component: singlePostTemplate,
                 context: {
                     slug: node.fields.slug,
-                    imgUrl: authors.find( author => author.name === node.frontmatter.author).imgUrl
+                    imgUrl: authors.find(author => author.name === node.frontmatter.author).imgUrl
                 }
             })
         })
 
-        // let tags = [];
-        // posts.forEach(({node})=> {
-        //     if(node.frontmatter.tags.length > 0){
-        //          tags.push(...node.frontmatter.tags);
-        //     }
-        //     return tags;
-        // })
-        // console.log("---------------",tags, "---------------");
-        // if(tags){
-        //    const vals = tags.reduce((accumTag, currentTag)=>{               
-        //     accumTag[currentTag] ? accumTag[currentTag] = accumTag[currentTag] + 1 : accumTag[currentTag] = 1;
-        //     return accumTag;
-        //     }, {})
-        //     console.log(vals);
-        // }
-        
+
+        // ------- Tags page -------------
+
+        let tags = [];
+        posts.forEach(({ node }) => {
+            if (node.frontmatter.tags.length > 0) {
+                tags.push(...node.frontmatter.tags);
+            }
+        })
+
+        if (tags) {
+            let filteredTags;
+            filteredTags = tags.reduce((accumTag, currentTag) => {
+                accumTag[currentTag] ? accumTag[currentTag] = accumTag[currentTag] + 1 : accumTag[currentTag] = 1;
+                return accumTag;
+            }, {})
+            let filteredTagsArr = Object.entries(filteredTags);
+            filteredTagsArr.forEach((tag) => {
+                let tagSlug = slugify(tag[0], { lower: true });
+                console.log(tagSlug, tag[0], tag[1])
+                createPage({
+                    path: `/tags/${tagSlug}`,
+                    component: tagsPageTemplate,
+                    context: {
+                        tagTitle: tag[0]
+                    }
+                })
+            })
+
+        }
+
+
+
     })
 }

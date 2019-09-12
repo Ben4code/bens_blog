@@ -4,19 +4,21 @@ import SEO from "../components/seo"
 import { StaticQuery, graphql } from 'gatsby'
 import Posts from '../components/Posts'
 
-const IndexPage = () => (
-  <Layout pageTitle = "Welcome to Ben's blog">
-    <SEO title="Home" />
-        <StaticQuery query={IndexQuery} render={(data) => (
-          <div>
-            {data.allMarkdownRemark.edges.map(({ node }) => (
-              <Posts key={node.id} post={node} />
-            ))}
-          </div>
-        )} />
-  </Layout>
-)
-
+const IndexPage = () => {
+  
+  return (
+    <Layout pageTitle="Welcome to Ben's blog">
+      <SEO title="Home" />
+      <StaticQuery query={IndexQuery} render={(data) => (
+        <div>
+          {data.allMarkdownRemark.edges.map(({ node }) => (
+            <Posts key={node.id} post={node} />
+          ))}
+        </div>
+      )} />
+    </Layout>
+  )
+}
 const IndexQuery = graphql`
   query{
     allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}){
