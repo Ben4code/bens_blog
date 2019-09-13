@@ -2,9 +2,11 @@ const slugify = require('slugify');
 const path = require('path');
 const authors = require('./src/util/authors');
 
+
+
+//Create slug node with post title and slugify
 exports.onCreateNode = ({ node, actions }) => {
     const { createNodeField } = actions;
-
     if (node.internal.type === 'MarkdownRemark') {
         const slugFromTitle = slugify(node.frontmatter.title);
         createNodeField({
@@ -15,13 +17,14 @@ exports.onCreateNode = ({ node, actions }) => {
     }
 }
 
+
 exports.createPages = ({ actions, graphql }) => {
     const { createPage } = actions;
     const singlePostTemplate = path.resolve('./src/templates/singlePost.js');
     const tagsPageTemplate = path.resolve('./src/templates/tagsPage.js');
+    const postListTemplate = path.resolve('./src/templates/postList.js');
 
     return graphql(`
-    
         {
             allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}) {
                 edges {
@@ -38,12 +41,12 @@ exports.createPages = ({ actions, graphql }) => {
             }
         }
     `).then(res => {
+        //Check  for errors
         if (res.errors) {
             return res.errors;
         }
 
         const posts = res.data.allMarkdownRemark.edges;
-
         posts.forEach(({ node }) => {
             createPage({
                 path: `/posts/${node.fields.slug}`,
@@ -56,8 +59,8 @@ exports.createPages = ({ actions, graphql }) => {
         })
 
 
-        // ------- Tags page -------------
 
+        // ------- Tags page -------------
         let tags = [];
         posts.forEach(({ node }) => {
             if (node.frontmatter.tags.length > 0) {
@@ -74,7 +77,6 @@ exports.createPages = ({ actions, graphql }) => {
             let filteredTagsArr = Object.entries(filteredTags);
             filteredTagsArr.forEach((tag) => {
                 let tagSlug = slugify(tag[0], { lower: true });
-                console.log(tagSlug, tag[0], tag[1])
                 createPage({
                     path: `/tags/${tagSlug}`,
                     component: tagsPageTemplate,
@@ -83,10 +85,30 @@ exports.createPages = ({ actions, graphql }) => {
                     }
                 })
             })
-
         }
 
 
 
+        // ---- Pagination -----
+        const postsPerPage = 2;
+        const numberOfPages = Math.ceil(posts.length / postsPerPage);
+
+        //Create array and loop through it
+        Array.from({length: numberOfPages}).forEach((_, index)=> {
+            const isFirstPage = index === 0;
+            const currentPage = index + 1;
+            if(isFirstPage) return;
+
+            createPage({
+                path: `/page/${currentPage}`,
+                component: postListTemplate,
+                context:{
+                    limit: postsPerPage,
+                    skip: index * postsPerPage,
+                    currentPage: currentPage,
+                    numberOfPages
+                }
+            })
+        })
     })
 }
